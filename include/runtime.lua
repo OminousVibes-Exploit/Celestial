@@ -24,15 +24,15 @@ local function findFile(path: string)
     end
 
     -- Get File:
-    if isfolder(folder .. "/" .. nodes[#nodes]) then
-        return folder .. "/init.lua"
+    if isfolder(path) and isfile(path .. "/init.lua") then
+        return path .. "/init.lua", ".lua"
     end
 
     local file;
     local extension;
     for i,v in ipairs(listfiles(folder)) do
         local name, count = v:gsub(folder, "", 1)
-        if count == 1 then
+        if count == 1 and name:find(nodes[#nodes]) then
             local split = name:split(".")
             local ext = "." .. split[#split]
             if table.find(ValidExtensions, ext) then
@@ -74,9 +74,5 @@ function Runtime.import(path: string)
     end
     return error("File not found");
 end
-
-print(Runtime.import("Test/Test-script")())
-task.wait(2.5)
-print(Runtime.import("Test/Test-script")())
 
 return Runtime

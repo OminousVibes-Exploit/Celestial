@@ -48,7 +48,12 @@ function Installer.update()
         requestHttp("/build.json")
     )
     for i,v in pairs(latest.src) do
-        local file = configs.folder .. "/" .. v
+        local file = configs.folder .. "/src/" .. v
+        local chunk = requestHttp(v)
+        writeFile(file, chunk)
+    end
+    for i,v in pairs(latest.packages) do
+        local file = configs.folder .. "/packages/" .. v
         local chunk = requestHttp(v)
         writeFile(file, chunk)
     end
