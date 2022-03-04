@@ -2,7 +2,7 @@ local HttpService = game:GetService("HttpService")
 
 local configs = {
     folder = "directory",
-    source = "user/repository/branch",
+    source = "OminousVibes-Exploit/Celestial/main",
     root = "https://raw.githubusercontent.com/"
 }
 
@@ -44,9 +44,8 @@ function Installer.isUpdated()
 end
 
 function Installer.update()
-    local latest = HttpService:JSONDecode(
-        requestHttp("/build.json")
-    )
+    local build = requestHttp("/build.json")
+    local latest = HttpService:JSONDecode(build)
     for i,v in pairs(latest.src) do
         local file = configs.folder .. "/src/" .. v
         local chunk = requestHttp(v)
@@ -57,6 +56,7 @@ function Installer.update()
         local chunk = requestHttp(v)
         writeFile(file, chunk)
     end
+    writeFile(configs.folder .. "/build.json", build)
 end
 
 return Installer

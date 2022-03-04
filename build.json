@@ -4,5 +4,8 @@
     "description": "",
     "author": "",
     "src": {},
-    "packages": {}
+    "packages": {
+        "janitor.lua": "packages/janitor.lua",
+        "promise.lua": "packages/promise.lua"
+    }
 }
