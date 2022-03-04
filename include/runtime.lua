@@ -1,5 +1,7 @@
 local HttpService = game:GetService("HttpService")
 
+local build = "directory"
+
 -- Constants:
 local ValidExtensions = {
     ".lua",
@@ -59,6 +61,7 @@ end
 local Runtime = {}
 
 function Runtime.import(path: string)
+    path = build .. "/" .. path
     if imported[path] then return imported[path] end
     local file, extension = findFile(path)
     if file then
