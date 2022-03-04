@@ -43,20 +43,29 @@ function Installer.isUpdated()
     end
 end
 
-function Installer.update()
+function Installer.update(reset: boolean)
+    if reset then delfolder(configs.folder) end
     local build = requestHttp("/build.json")
+    local installer = requestHttp("/include/installer.lua")
+    local runtime = requestHttp("/include/runtime.lua")
+
+    writeFile(configs.folder .. "/build.json", build)
+    writeFile(configs.folder .. "/include/installer.lua", installer)
+    writeFile(configs.folder .. "/include/runtime.lua", runtime)
+
     local latest = HttpService:JSONDecode(build)
     for i,v in pairs(latest.src) do
-        local file = configs.folder .. "/src/" .. v
+        local file = configs.folder .. "/src/" .. i
         local chunk = requestHttp(v)
         writeFile(file, chunk)
     end
     for i,v in pairs(latest.packages) do
-        local file = configs.folder .. "/packages/" .. v
+        local file = configs.folder .. "/packages/" .. i
         local chunk = requestHttp(v)
         writeFile(file, chunk)
     end
-    writeFile(configs.folder .. "/build.json", build)
 end
+
+Installer.update(true)
 
 return Installer
